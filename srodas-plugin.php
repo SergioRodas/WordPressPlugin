@@ -31,6 +31,10 @@ class SRodasPlugin
         add_action('init', array($this, 'custom_post_type'));
     }
 
+    function register() {
+        add_action('admin_enqueue_scripts', array($this, 'enqueue'));
+    }
+
     function activate() {
         // generated a CPT
         $this->custom_post_type();
@@ -46,10 +50,16 @@ class SRodasPlugin
         register_post_type('book', ['public' => true, 'label' => 'Books']);   
     }
 
+    function enqueue() {
+        // enqueue all our scripts
+        wp_enqueue_style('mypluginstyle', plugins_url('/assets/mystyle.css', __FILE__));
+    }
+
 }
 
 if ( class_exists('SRodasPlugin') ) {
     $sRodasPlugin = new SRodasPlugin();
+    $sRodasPlugin->register();
 }
 
 // Activation
